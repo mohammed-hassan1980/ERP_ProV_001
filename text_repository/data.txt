@@ -1,0 +1,32 @@
+SAMPLE DATA FILE
+================
+
+User Records
+------------
+ID    | Name              | Email                    | Role
+------|-------------------|--------------------------|-------------
+001   | John Smith        | john.smith@example.com   | Admin
+002   | Jane Doe          | jane.doe@example.com     | Manager
+003   | Bob Johnson       | bob.j@example.com        | User
+004   | Alice Williams    | alice.w@example.com      | User
+005   | Charlie Brown     | charlie.b@example.com    | Manager
+
+Product Inventory
+-----------------
+Code  | Product Name      | Quantity | Price    | Category
+------|-------------------|----------|----------|-------------
+P001  | Office Chair      | 45       | $150.00  | Furniture
+P002  | Desk Lamp         | 120      | $35.00   | Lighting
+P003  | Laptop Stand      | 67       | $45.00   | Accessories
+P004  | Keyboard          | 200      | $75.00   | Electronics
+P005  | Monitor 24"       | 33       | $299.00  | Electronics
+
+Transaction Log
+---------------
+Date       | Transaction ID | Amount   | Status
+-----------|----------------|----------|----------
+2025-11-01 | TXN001        | $1,200.00| Completed
+2025-11-05 | TXN002        | $850.00  | Completed
+2025-11-08 | TXN003        | $2,100.00| Pending
+2025-11-10 | TXN004        | $450.00  | Completed
+2025-11-13 | TXN005        | $1,750.00| Processing
