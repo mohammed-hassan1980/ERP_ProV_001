@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Orders Maintenance</title>
+    <title>Manufacturing & Maintenance Work Orders</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
@@ -52,7 +52,7 @@
             background: #f8f9fa;
             padding: 25px;
             border-radius: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border: 1px solid #dee2e6;
         }
 
@@ -61,11 +61,60 @@
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid #667eea;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-section h2:hover {
+            color: #667eea;
+        }
+
+        .form-section h2::after {
+            content: '▼';
+            font-size: 0.8em;
+            transition: transform 0.3s;
+        }
+
+        .form-section h2.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .collapsible-content {
+            max-height: 5000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -79,6 +128,11 @@
             font-weight: 600;
             margin-bottom: 8px;
             color: #34495e;
+            font-size: 0.95em;
+        }
+
+        .form-group label .required {
+            color: #dc3545;
         }
 
         .form-group input,
@@ -101,7 +155,18 @@
 
         .form-group textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .button-group {
@@ -168,6 +233,15 @@
             background: #138496;
         }
 
+        .btn-warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
         .table-section {
             margin-top: 30px;
             overflow-x: auto;
@@ -177,6 +251,7 @@
             width: 100%;
             border-collapse: collapse;
             background: white;
+            font-size: 0.9em;
         }
 
         table thead {
@@ -186,7 +261,7 @@
 
         table th,
         table td {
-            padding: 15px;
+            padding: 12px;
             text-align: left;
             border-bottom: 1px solid #dee2e6;
         }
@@ -201,6 +276,7 @@
             font-size: 0.85em;
             font-weight: 600;
             display: inline-block;
+            white-space: nowrap;
         }
 
         .status-open {
@@ -223,6 +299,16 @@
             color: white;
         }
 
+        .status-on-hold {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .priority-critical {
+            color: #8b0000;
+            font-weight: bold;
+        }
+
         .priority-high {
             color: #dc3545;
             font-weight: bold;
@@ -241,6 +327,7 @@
         .action-buttons {
             display: flex;
             gap: 5px;
+            flex-wrap: wrap;
         }
 
         .action-btn {
@@ -255,18 +342,71 @@
             margin-bottom: 20px;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .search-bar input {
             flex: 1;
+            min-width: 250px;
             padding: 12px;
             border: 1px solid #ced4da;
             border-radius: 5px;
             font-size: 1em;
         }
 
+        .search-bar select {
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .parts-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        .parts-table th,
+        .parts-table td {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .parts-table th {
+            background: #e9ecef;
+            font-weight: 600;
+        }
+
+        .add-part-btn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .add-part-btn:hover {
+            background: #218838;
+        }
+
+        .section-indicator {
+            background: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #495057;
+        }
+
         @media (max-width: 768px) {
-            .form-grid {
+            .form-grid,
+            .form-grid-2,
+            .form-grid-3,
+            .form-grid-4 {
                 grid-template-columns: 1fr;
             }
 
@@ -277,106 +417,700 @@
             .btn {
                 width: 100%;
             }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar input,
+            .search-bar select {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Work Orders Maintenance</h1>
-            <p>Manage and track work orders efficiently</p>
+            <h1>Manufacturing & Maintenance Work Orders</h1>
+            <p>Comprehensive Work Order Management System</p>
         </div>
 
         <div class="content">
             <!-- Work Order Form -->
-            <div class="form-section">
-                <h2>Create/Edit Work Order</h2>
-                <form id="woForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="woNumber">Work Order Number *</label>
-                            <input type="text" id="woNumber" name="woNumber" required>
-                        </div>
+            <form id="woForm">
 
-                        <div class="form-group">
-                            <label for="woDate">Date *</label>
-                            <input type="date" id="woDate" name="woDate" required>
-                        </div>
+                <!-- SECTION 1: Basic Information -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">1. Basic Information</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-4">
+                            <div class="form-group">
+                                <label for="woNumber">Work Order Number <span class="required">*</span></label>
+                                <input type="text" id="woNumber" name="woNumber" required>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="priority">Priority *</label>
-                            <select id="priority" name="priority" required>
-                                <option value="">Select Priority</option>
-                                <option value="Low">Low</option>
-                                <option value="Medium">Medium</option>
-                                <option value="High">High</option>
-                                <option value="Critical">Critical</option>
-                            </select>
-                        </div>
+                            <div class="form-group">
+                                <label for="woDate">WO Date <span class="required">*</span></label>
+                                <input type="date" id="woDate" name="woDate" required>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="status">Status *</label>
-                            <select id="status" name="status" required>
-                                <option value="">Select Status</option>
-                                <option value="Open">Open</option>
-                                <option value="In Progress">In Progress</option>
-                                <option value="Completed">Completed</option>
-                                <option value="Closed">Closed</option>
-                                <option value="On Hold">On Hold</option>
-                            </select>
-                        </div>
+                            <div class="form-group">
+                                <label for="woType">Work Order Type <span class="required">*</span></label>
+                                <select id="woType" name="woType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Preventive Maintenance">Preventive Maintenance</option>
+                                    <option value="Corrective Maintenance">Corrective Maintenance</option>
+                                    <option value="Breakdown Maintenance">Breakdown Maintenance</option>
+                                    <option value="Emergency Maintenance">Emergency Maintenance</option>
+                                    <option value="Predictive Maintenance">Predictive Maintenance</option>
+                                    <option value="Inspection">Inspection</option>
+                                    <option value="Calibration">Calibration</option>
+                                    <option value="Installation">Installation</option>
+                                    <option value="Modification">Modification</option>
+                                    <option value="Overhaul">Overhaul</option>
+                                    <option value="Lubrication">Lubrication</option>
+                                    <option value="Cleaning">Cleaning</option>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="equipment">Equipment/Asset ID</label>
-                            <input type="text" id="equipment" name="equipment">
-                        </div>
+                            <div class="form-group">
+                                <label for="maintenanceType">Maintenance Type <span class="required">*</span></label>
+                                <select id="maintenanceType" name="maintenanceType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Planned">Planned</option>
+                                    <option value="Unplanned">Unplanned</option>
+                                    <option value="Emergency">Emergency</option>
+                                    <option value="Shutdown">Shutdown</option>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="location">Location</label>
-                            <input type="text" id="location" name="location">
-                        </div>
+                            <div class="form-group">
+                                <label for="priority">Priority <span class="required">*</span></label>
+                                <select id="priority" name="priority" required>
+                                    <option value="">Select Priority</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="Critical">Critical</option>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="assignedTo">Assigned To</label>
-                            <input type="text" id="assignedTo" name="assignedTo">
-                        </div>
+                            <div class="form-group">
+                                <label for="status">Status <span class="required">*</span></label>
+                                <select id="status" name="status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="On Hold">On Hold</option>
+                                    <option value="Awaiting Parts">Awaiting Parts</option>
+                                    <option value="Awaiting Approval">Awaiting Approval</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Closed">Closed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="dueDate">Due Date</label>
-                            <input type="date" id="dueDate" name="dueDate">
+                            <div class="form-group">
+                                <label for="workCategory">Work Category <span class="required">*</span></label>
+                                <select id="workCategory" name="workCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Mechanical">Mechanical</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Instrumentation">Instrumentation & Control</option>
+                                    <option value="HVAC">HVAC</option>
+                                    <option value="Plumbing">Plumbing</option>
+                                    <option value="Civil">Civil/Structural</option>
+                                    <option value="Welding">Welding</option>
+                                    <option value="Fabrication">Fabrication</option>
+                                    <option value="Pneumatic">Pneumatic</option>
+                                    <option value="Hydraulic">Hydraulic</option>
+                                    <option value="Robotics">Robotics</option>
+                                    <option value="Production">Production Support</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="criticality">Equipment Criticality</label>
+                                <select id="criticality" name="criticality">
+                                    <option value="">Select Criticality</option>
+                                    <option value="Critical">Critical - Production Stop</option>
+                                    <option value="Important">Important - Reduced Capacity</option>
+                                    <option value="Standard">Standard - Minimal Impact</option>
+                                    <option value="Non-Critical">Non-Critical</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="description">Description *</label>
-                        <textarea id="description" name="description" required></textarea>
-                    </div>
+                <!-- SECTION 2: Equipment/Asset Information -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">2. Equipment/Asset Information</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="equipment">Equipment/Asset ID <span class="required">*</span></label>
+                                <input type="text" id="equipment" name="equipment" required>
+                            </div>
 
-                    <div class="form-group">
-                        <label for="notes">Notes</label>
-                        <textarea id="notes" name="notes"></textarea>
-                    </div>
+                            <div class="form-group">
+                                <label for="equipmentName">Equipment Name</label>
+                                <input type="text" id="equipmentName" name="equipmentName">
+                            </div>
 
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">Save Work Order</button>
-                        <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
-                        <button type="button" class="btn btn-info" onclick="generateReport()">Generate Report</button>
+                            <div class="form-group">
+                                <label for="equipmentCategory">Equipment Category</label>
+                                <select id="equipmentCategory" name="equipmentCategory">
+                                    <option value="">Select Category</option>
+                                    <option value="Production Machine">Production Machine</option>
+                                    <option value="Pump">Pump</option>
+                                    <option value="Motor">Motor</option>
+                                    <option value="Compressor">Compressor</option>
+                                    <option value="Conveyor">Conveyor System</option>
+                                    <option value="Boiler">Boiler</option>
+                                    <option value="Chiller">Chiller</option>
+                                    <option value="Tank">Tank/Vessel</option>
+                                    <option value="Crane">Crane/Hoist</option>
+                                    <option value="Transformer">Transformer</option>
+                                    <option value="Generator">Generator</option>
+                                    <option value="Robot">Robot/Automated System</option>
+                                    <option value="CNC">CNC Machine</option>
+                                    <option value="Press">Press</option>
+                                    <option value="Valve">Valve</option>
+                                    <option value="Heat Exchanger">Heat Exchanger</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="manufacturer">Manufacturer</label>
+                                <input type="text" id="manufacturer" name="manufacturer">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="model">Model Number</label>
+                                <input type="text" id="model" name="model">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serialNumber">Serial Number</label>
+                                <input type="text" id="serialNumber" name="serialNumber">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">Location <span class="required">*</span></label>
+                                <input type="text" id="location" name="location" placeholder="Building/Area/Line" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="department">Department/Cost Center</label>
+                                <select id="department" name="department">
+                                    <option value="">Select Department</option>
+                                    <option value="Production Line 1">Production Line 1</option>
+                                    <option value="Production Line 2">Production Line 2</option>
+                                    <option value="Assembly">Assembly</option>
+                                    <option value="Packaging">Packaging</option>
+                                    <option value="Warehouse">Warehouse</option>
+                                    <option value="Quality Control">Quality Control</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Utilities">Utilities</option>
+                                    <option value="R&D">R&D</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="plantArea">Plant Area</label>
+                                <input type="text" id="plantArea" name="plantArea">
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <!-- SECTION 3: Problem Description & Work Details -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">3. Problem Description & Work Details</h2>
+                    <div class="collapsible-content">
+                        <div class="form-group">
+                            <label for="problemDescription">Problem Description <span class="required">*</span></label>
+                            <textarea id="problemDescription" name="problemDescription" rows="4" required placeholder="Describe the problem, symptoms, or reason for maintenance..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="workRequired">Work Required/Instructions</label>
+                            <textarea id="workRequired" name="workRequired" rows="4" placeholder="Detailed work instructions, procedures to follow, safety precautions..."></textarea>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="failureMode">Failure Mode</label>
+                                <select id="failureMode" name="failureMode">
+                                    <option value="">Select Failure Mode</option>
+                                    <option value="Wear">Wear and Tear</option>
+                                    <option value="Fatigue">Fatigue</option>
+                                    <option value="Corrosion">Corrosion</option>
+                                    <option value="Overheating">Overheating</option>
+                                    <option value="Vibration">Excessive Vibration</option>
+                                    <option value="Misalignment">Misalignment</option>
+                                    <option value="Leakage">Leakage</option>
+                                    <option value="Electrical">Electrical Failure</option>
+                                    <option value="Mechanical">Mechanical Failure</option>
+                                    <option value="Software">Software/Control Issue</option>
+                                    <option value="Human Error">Human Error</option>
+                                    <option value="External">External Factors</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rootCause">Root Cause</label>
+                                <input type="text" id="rootCause" name="rootCause">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="correctiveAction">Corrective Action Taken</label>
+                                <input type="text" id="correctiveAction" name="correctiveAction">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="preventiveMeasures">Preventive Measures/Recommendations</label>
+                            <textarea id="preventiveMeasures" name="preventiveMeasures" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: Scheduling & Time Tracking -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">4. Scheduling & Time Tracking</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-4">
+                            <div class="form-group">
+                                <label for="requestedDate">Requested Date</label>
+                                <input type="date" id="requestedDate" name="requestedDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="scheduledStartDate">Scheduled Start Date</label>
+                                <input type="date" id="scheduledStartDate" name="scheduledStartDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="scheduledStartTime">Scheduled Start Time</label>
+                                <input type="time" id="scheduledStartTime" name="scheduledStartTime">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="scheduledEndDate">Scheduled End Date</label>
+                                <input type="date" id="scheduledEndDate" name="scheduledEndDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="scheduledEndTime">Scheduled End Time</label>
+                                <input type="time" id="scheduledEndTime" name="scheduledEndTime">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="actualStartDate">Actual Start Date</label>
+                                <input type="date" id="actualStartDate" name="actualStartDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="actualStartTime">Actual Start Time</label>
+                                <input type="time" id="actualStartTime" name="actualStartTime">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="actualEndDate">Actual End Date</label>
+                                <input type="date" id="actualEndDate" name="actualEndDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="actualEndTime">Actual End Time</label>
+                                <input type="time" id="actualEndTime" name="actualEndTime">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estimatedHours">Estimated Labor Hours</label>
+                                <input type="number" id="estimatedHours" name="estimatedHours" step="0.5" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="actualHours">Actual Labor Hours</label>
+                                <input type="number" id="actualHours" name="actualHours" step="0.5" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dueDate">Due Date</label>
+                                <input type="date" id="dueDate" name="dueDate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: Personnel Assignment -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">5. Personnel Assignment</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="requestedBy">Requested By</label>
+                                <input type="text" id="requestedBy" name="requestedBy">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="assignedTo">Assigned To (Lead Technician)</label>
+                                <input type="text" id="assignedTo" name="assignedTo">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="technicianTeam">Technician Team</label>
+                                <input type="text" id="technicianTeam" name="technicianTeam" placeholder="Multiple technicians separated by comma">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="supervisor">Supervisor</label>
+                                <input type="text" id="supervisor" name="supervisor">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="approvedBy">Approved By</label>
+                                <input type="text" id="approvedBy" name="approvedBy">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="approvalDate">Approval Date</label>
+                                <input type="date" id="approvalDate" name="approvalDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="plannedBy">Planned By (Planner)</label>
+                                <input type="text" id="plannedBy" name="plannedBy">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contractorName">Contractor/Vendor Name</label>
+                                <input type="text" id="contractorName" name="contractorName">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contractorContact">Contractor Contact</label>
+                                <input type="text" id="contractorContact" name="contractorContact">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 6: Parts & Materials -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">6. Parts & Materials</h2>
+                    <div class="collapsible-content">
+                        <div class="section-indicator">Required Spare Parts</div>
+                        <table class="parts-table" id="partsTable">
+                            <thead>
+                                <tr>
+                                    <th>Part Number</th>
+                                    <th>Part Description</th>
+                                    <th>Quantity Required</th>
+                                    <th>Unit</th>
+                                    <th>Unit Cost</th>
+                                    <th>Total Cost</th>
+                                    <th>Stock Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="partsTableBody">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; color: #6c757d;">No parts added yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="add-part-btn" onclick="addPartRow()">+ Add Part</button>
+
+                        <div class="form-grid-3" style="margin-top: 20px;">
+                            <div class="form-group">
+                                <label for="totalMaterialCost">Total Material Cost</label>
+                                <input type="number" id="totalMaterialCost" name="totalMaterialCost" step="0.01" min="0" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="laborCost">Labor Cost</label>
+                                <input type="number" id="laborCost" name="laborCost" step="0.01" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="totalCost">Total Work Order Cost</label>
+                                <input type="number" id="totalCost" name="totalCost" step="0.01" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="budgetCode">Budget Code</label>
+                                <input type="text" id="budgetCode" name="budgetCode">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="purchaseOrder">Purchase Order Number</label>
+                                <input type="text" id="purchaseOrder" name="purchaseOrder">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="materialRequisition">Material Requisition Number</label>
+                                <input type="text" id="materialRequisition" name="materialRequisition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 7: Safety & Permits -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">7. Safety & Permits</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label for="safetyRequirements">Safety Requirements</label>
+                                <textarea id="safetyRequirements" name="safetyRequirements" rows="3"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ppeRequired">PPE Required</label>
+                                <textarea id="ppeRequired" name="ppeRequired" rows="3" placeholder="Hard hat, safety glasses, gloves, etc."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-4">
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="permitRequired" name="permitRequired">
+                                <label for="permitRequired">Work Permit Required</label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="lotoRequired" name="lotoRequired">
+                                <label for="lotoRequired">Lock Out Tag Out (LOTO) Required</label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="hotWorkPermit" name="hotWorkPermit">
+                                <label for="hotWorkPermit">Hot Work Permit</label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="confinedSpace" name="confinedSpace">
+                                <label for="confinedSpace">Confined Space Entry</label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="heightWork" name="heightWork">
+                                <label for="heightWork">Work at Height</label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="electricalPermit" name="electricalPermit">
+                                <label for="electricalPermit">Electrical Work Permit</label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="excavationPermit" name="excavationPermit">
+                                <label for="excavationPermit">Excavation Permit</label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="environmentalConcern" name="environmentalConcern">
+                                <label for="environmentalConcern">Environmental Concerns</label>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="permitNumber">Permit Number</label>
+                                <input type="text" id="permitNumber" name="permitNumber">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lotoNumber">LOTO Number</label>
+                                <input type="text" id="lotoNumber" name="lotoNumber">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="isolationPoint">Isolation Points</label>
+                                <input type="text" id="isolationPoint" name="isolationPoint">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 8: Downtime & Production Impact -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">8. Downtime & Production Impact</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-4">
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="equipmentDowntime" name="equipmentDowntime">
+                                <label for="equipmentDowntime">Equipment Downtime</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="downtimeHours">Downtime Hours</label>
+                                <input type="number" id="downtimeHours" name="downtimeHours" step="0.5" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productionLoss">Production Loss (Units)</label>
+                                <input type="number" id="productionLoss" name="productionLoss" step="1" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="downtimeCost">Estimated Downtime Cost</label>
+                                <input type="number" id="downtimeCost" name="downtimeCost" step="0.01" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productionImpact">Production Impact Description</label>
+                            <textarea id="productionImpact" name="productionImpact" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 9: Quality & Inspection -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">9. Quality & Inspection</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-3">
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="qualityInspection" name="qualityInspection">
+                                <label for="qualityInspection">Quality Inspection Required</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inspectedBy">Inspected By</label>
+                                <input type="text" id="inspectedBy" name="inspectedBy">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inspectionDate">Inspection Date</label>
+                                <input type="date" id="inspectionDate" name="inspectionDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="testResults">Test Results</label>
+                                <select id="testResults" name="testResults">
+                                    <option value="">Select Result</option>
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                    <option value="Conditional Pass">Conditional Pass</option>
+                                    <option value="Pending">Pending</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="qualityApproval">Quality Approval By</label>
+                                <input type="text" id="qualityApproval" name="qualityApproval">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="calibrationRequired">Calibration Due Date</label>
+                                <input type="date" id="calibrationRequired" name="calibrationRequired">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inspectionNotes">Inspection Notes/Checklist</label>
+                            <textarea id="inspectionNotes" name="inspectionNotes" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 10: Documentation & Follow-up -->
+                <div class="form-section">
+                    <h2 onclick="toggleSection(this)">10. Documentation & Follow-up</h2>
+                    <div class="collapsible-content">
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="workProcedure">Work Procedure/SOP Number</label>
+                                <input type="text" id="workProcedure" name="workProcedure">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="drawingNumber">Drawing/Blueprint Number</label>
+                                <input type="text" id="drawingNumber" name="drawingNumber">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="specification">Specification/Standard</label>
+                                <input type="text" id="specification" name="specification">
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="followupRequired" name="followupRequired">
+                                <label for="followupRequired">Follow-up Required</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="followupDate">Follow-up Date</label>
+                                <input type="date" id="followupDate" name="followupDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="nextPMDate">Next PM Scheduled Date</label>
+                                <input type="date" id="nextPMDate" name="nextPMDate">
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="warrantyWork" name="warrantyWork">
+                                <label for="warrantyWork">Warranty Work</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="warrantyExpiry">Warranty Expiry Date</label>
+                                <input type="date" id="warrantyExpiry" name="warrantyExpiry">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="attachments">Attachments/Photos</label>
+                                <input type="file" id="attachments" name="attachments" multiple>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="workCompleted">Work Completed Summary</label>
+                            <textarea id="workCompleted" name="workCompleted" rows="4" placeholder="Summarize the work completed, parts replaced, adjustments made..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additionalNotes">Additional Notes/Comments</label>
+                            <textarea id="additionalNotes" name="additionalNotes" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">Save Work Order</button>
+                    <button type="button" class="btn btn-success" onclick="approveWorkOrder()">Approve & Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+                    <button type="button" class="btn btn-info" onclick="printWorkOrder()">Print Work Order</button>
+                    <button type="button" class="btn btn-warning" onclick="exportToExcel()">Export to Excel</button>
+                </div>
+
+            </form>
 
             <!-- Search and Filter -->
             <div class="form-section">
-                <h2>Search Work Orders</h2>
+                <h2>Search & Filter Work Orders</h2>
                 <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="Search by WO number, equipment, or description..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" placeholder="Search by WO number, equipment, description..." onkeyup="filterTable()">
                     <select id="statusFilter" onchange="filterTable()">
                         <option value="">All Statuses</option>
+                        <option value="Draft">Draft</option>
                         <option value="Open">Open</option>
+                        <option value="Assigned">Assigned</option>
                         <option value="In Progress">In Progress</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Awaiting Parts">Awaiting Parts</option>
+                        <option value="Awaiting Approval">Awaiting Approval</option>
                         <option value="Completed">Completed</option>
                         <option value="Closed">Closed</option>
-                        <option value="On Hold">On Hold</option>
+                        <option value="Cancelled">Cancelled</option>
                     </select>
                     <select id="priorityFilter" onchange="filterTable()">
                         <option value="">All Priorities</option>
@@ -384,6 +1118,21 @@
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                         <option value="Critical">Critical</option>
+                    </select>
+                    <select id="typeFilter" onchange="filterTable()">
+                        <option value="">All Types</option>
+                        <option value="Preventive Maintenance">Preventive</option>
+                        <option value="Corrective Maintenance">Corrective</option>
+                        <option value="Breakdown Maintenance">Breakdown</option>
+                        <option value="Emergency Maintenance">Emergency</option>
+                        <option value="Inspection">Inspection</option>
+                    </select>
+                    <select id="categoryFilter" onchange="filterTable()">
+                        <option value="">All Categories</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Instrumentation">Instrumentation</option>
+                        <option value="HVAC">HVAC</option>
                     </select>
                 </div>
             </div>
@@ -396,6 +1145,8 @@
                         <tr>
                             <th>WO Number</th>
                             <th>Date</th>
+                            <th>Type</th>
+                            <th>Category</th>
                             <th>Equipment</th>
                             <th>Location</th>
                             <th>Priority</th>
@@ -410,14 +1161,17 @@
                         <tr>
                             <td>WO-2025-001</td>
                             <td>2025-11-10</td>
+                            <td>Preventive Maintenance</td>
+                            <td>Mechanical</td>
                             <td>PUMP-A101</td>
-                            <td>Building A</td>
+                            <td>Production Line 1</td>
                             <td><span class="priority-high">High</span></td>
                             <td><span class="status-badge status-in-progress">In Progress</span></td>
                             <td>John Smith</td>
                             <td>2025-11-15</td>
                             <td>
                                 <div class="action-buttons">
+                                    <button class="action-btn btn-info" onclick="viewWorkOrder(this)">View</button>
                                     <button class="action-btn btn-info" onclick="editWorkOrder(this)">Edit</button>
                                     <button class="action-btn btn-danger" onclick="deleteWorkOrder(this)">Delete</button>
                                 </div>
@@ -426,14 +1180,17 @@
                         <tr>
                             <td>WO-2025-002</td>
                             <td>2025-11-11</td>
-                            <td>HVAC-B202</td>
-                            <td>Building B</td>
-                            <td><span class="priority-medium">Medium</span></td>
+                            <td>Breakdown Maintenance</td>
+                            <td>Electrical</td>
+                            <td>MOTOR-B202</td>
+                            <td>Assembly Area</td>
+                            <td><span class="priority-critical">Critical</span></td>
                             <td><span class="status-badge status-open">Open</span></td>
                             <td>Sarah Johnson</td>
-                            <td>2025-11-20</td>
+                            <td>2025-11-12</td>
                             <td>
                                 <div class="action-buttons">
+                                    <button class="action-btn btn-info" onclick="viewWorkOrder(this)">View</button>
                                     <button class="action-btn btn-info" onclick="editWorkOrder(this)">Edit</button>
                                     <button class="action-btn btn-danger" onclick="deleteWorkOrder(this)">Delete</button>
                                 </div>
@@ -442,14 +1199,17 @@
                         <tr>
                             <td>WO-2025-003</td>
                             <td>2025-11-05</td>
-                            <td>CONV-C303</td>
-                            <td>Warehouse</td>
+                            <td>Inspection</td>
+                            <td>HVAC</td>
+                            <td>CHILLER-C303</td>
+                            <td>Utilities</td>
                             <td><span class="priority-low">Low</span></td>
                             <td><span class="status-badge status-completed">Completed</span></td>
                             <td>Mike Davis</td>
                             <td>2025-11-12</td>
                             <td>
                                 <div class="action-buttons">
+                                    <button class="action-btn btn-info" onclick="viewWorkOrder(this)">View</button>
                                     <button class="action-btn btn-info" onclick="editWorkOrder(this)">Edit</button>
                                     <button class="action-btn btn-danger" onclick="deleteWorkOrder(this)">Delete</button>
                                 </div>
@@ -465,22 +1225,85 @@
         // Initialize form with current date
         document.getElementById('woDate').valueAsDate = new Date();
 
+        // Toggle section collapse
+        function toggleSection(header) {
+            header.classList.toggle('collapsed');
+            const content = header.nextElementSibling;
+            content.classList.toggle('collapsed');
+        }
+
+        // Parts management
+        let partCounter = 0;
+        function addPartRow() {
+            const tbody = document.getElementById('partsTableBody');
+            if (tbody.rows[0] && tbody.rows[0].cells.length === 1) {
+                tbody.innerHTML = '';
+            }
+
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td><input type="text" name="partNumber[]" style="width:100%; padding:5px;"></td>
+                <td><input type="text" name="partDescription[]" style="width:100%; padding:5px;"></td>
+                <td><input type="number" name="partQty[]" min="0" step="1" style="width:100%; padding:5px;" onchange="calculatePartCost(this)"></td>
+                <td>
+                    <select name="partUnit[]" style="width:100%; padding:5px;">
+                        <option value="PCS">PCS</option>
+                        <option value="KG">KG</option>
+                        <option value="L">L</option>
+                        <option value="M">M</option>
+                        <option value="SET">SET</option>
+                    </select>
+                </td>
+                <td><input type="number" name="partUnitCost[]" min="0" step="0.01" style="width:100%; padding:5px;" onchange="calculatePartCost(this)"></td>
+                <td><input type="number" name="partTotalCost[]" readonly style="width:100%; padding:5px; background:#f8f9fa;"></td>
+                <td>
+                    <select name="stockStatus[]" style="width:100%; padding:5px;">
+                        <option value="In Stock">In Stock</option>
+                        <option value="To Order">To Order</option>
+                        <option value="On Order">On Order</option>
+                        <option value="N/A">N/A</option>
+                    </select>
+                </td>
+                <td><button type="button" class="action-btn btn-danger" onclick="removePartRow(this)">Remove</button></td>
+            `;
+            partCounter++;
+        }
+
+        function removePartRow(btn) {
+            const row = btn.closest('tr');
+            row.remove();
+            calculateTotalMaterialCost();
+
+            const tbody = document.getElementById('partsTableBody');
+            if (tbody.rows.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #6c757d;">No parts added yet</td></tr>';
+            }
+        }
+
+        function calculatePartCost(input) {
+            const row = input.closest('tr');
+            const qty = parseFloat(row.querySelector('[name="partQty[]"]').value) || 0;
+            const unitCost = parseFloat(row.querySelector('[name="partUnitCost[]"]').value) || 0;
+            const totalCost = qty * unitCost;
+            row.querySelector('[name="partTotalCost[]"]').value = totalCost.toFixed(2);
+            calculateTotalMaterialCost();
+        }
+
+        function calculateTotalMaterialCost() {
+            const totalCostInputs = document.querySelectorAll('[name="partTotalCost[]"]');
+            let total = 0;
+            totalCostInputs.forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            document.getElementById('totalMaterialCost').value = total.toFixed(2);
+        }
+
         // Form submission
         document.getElementById('woForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const formData = {
-                woNumber: document.getElementById('woNumber').value,
-                woDate: document.getElementById('woDate').value,
-                priority: document.getElementById('priority').value,
-                status: document.getElementById('status').value,
-                equipment: document.getElementById('equipment').value,
-                location: document.getElementById('location').value,
-                assignedTo: document.getElementById('assignedTo').value,
-                dueDate: document.getElementById('dueDate').value,
-                description: document.getElementById('description').value,
-                notes: document.getElementById('notes').value
-            };
+            // Collect all form data
+            const formData = new FormData(this);
 
             // Add new row to table
             addWorkOrderToTable(formData);
@@ -489,28 +1312,38 @@
             clearForm();
         });
 
-        function addWorkOrderToTable(data) {
+        function addWorkOrderToTable(formData) {
             const tbody = document.getElementById('woTableBody');
             const row = tbody.insertRow(0);
 
-            const priorityClass = data.priority === 'High' || data.priority === 'Critical' ? 'priority-high' :
-                                 data.priority === 'Medium' ? 'priority-medium' : 'priority-low';
+            const priority = formData.get('priority');
+            const status = formData.get('status');
+            const woType = formData.get('woType');
+            const category = formData.get('workCategory');
 
-            const statusClass = data.status === 'Open' ? 'status-open' :
-                               data.status === 'In Progress' ? 'status-in-progress' :
-                               data.status === 'Completed' ? 'status-completed' : 'status-closed';
+            const priorityClass = priority === 'Critical' ? 'priority-critical' :
+                                 priority === 'High' ? 'priority-high' :
+                                 priority === 'Medium' ? 'priority-medium' : 'priority-low';
+
+            const statusClass = status === 'Open' ? 'status-open' :
+                               status === 'In Progress' ? 'status-in-progress' :
+                               status === 'Completed' ? 'status-completed' :
+                               status === 'On Hold' ? 'status-on-hold' : 'status-closed';
 
             row.innerHTML = `
-                <td>${data.woNumber}</td>
-                <td>${data.woDate}</td>
-                <td>${data.equipment}</td>
-                <td>${data.location}</td>
-                <td><span class="${priorityClass}">${data.priority}</span></td>
-                <td><span class="status-badge ${statusClass}">${data.status}</span></td>
-                <td>${data.assignedTo}</td>
-                <td>${data.dueDate}</td>
+                <td>${formData.get('woNumber')}</td>
+                <td>${formData.get('woDate')}</td>
+                <td>${woType}</td>
+                <td>${category}</td>
+                <td>${formData.get('equipment')}</td>
+                <td>${formData.get('location')}</td>
+                <td><span class="${priorityClass}">${priority}</span></td>
+                <td><span class="status-badge ${statusClass}">${status}</span></td>
+                <td>${formData.get('assignedTo')}</td>
+                <td>${formData.get('dueDate')}</td>
                 <td>
                     <div class="action-buttons">
+                        <button class="action-btn btn-info" onclick="viewWorkOrder(this)">View</button>
                         <button class="action-btn btn-info" onclick="editWorkOrder(this)">Edit</button>
                         <button class="action-btn btn-danger" onclick="deleteWorkOrder(this)">Delete</button>
                     </div>
@@ -521,21 +1354,16 @@
         function clearForm() {
             document.getElementById('woForm').reset();
             document.getElementById('woDate').valueAsDate = new Date();
+            document.getElementById('partsTableBody').innerHTML = '<tr><td colspan="8" style="text-align: center; color: #6c757d;">No parts added yet</td></tr>';
+        }
+
+        function viewWorkOrder(btn) {
+            alert('View Work Order details (modal or new page implementation)');
         }
 
         function editWorkOrder(btn) {
-            const row = btn.closest('tr');
-            const cells = row.cells;
-
-            document.getElementById('woNumber').value = cells[0].textContent;
-            document.getElementById('woDate').value = cells[1].textContent;
-            document.getElementById('equipment').value = cells[2].textContent;
-            document.getElementById('location').value = cells[3].textContent;
-            document.getElementById('priority').value = cells[4].textContent.trim();
-            document.getElementById('status').value = cells[5].textContent.trim();
-            document.getElementById('assignedTo').value = cells[6].textContent;
-            document.getElementById('dueDate').value = cells[7].textContent;
-
+            // This would populate the form with data from the selected row
+            alert('Edit functionality - would populate form with work order data');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -547,10 +1375,25 @@
             }
         }
 
+        function approveWorkOrder() {
+            document.getElementById('status').value = 'Open';
+            document.getElementById('woForm').dispatchEvent(new Event('submit'));
+        }
+
+        function printWorkOrder() {
+            window.print();
+        }
+
+        function exportToExcel() {
+            alert('Export to Excel functionality - would generate Excel file with work order data');
+        }
+
         function filterTable() {
             const searchInput = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value;
             const priorityFilter = document.getElementById('priorityFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
             const table = document.getElementById('woTable');
             const rows = table.getElementsByTagName('tr');
 
@@ -562,29 +1405,44 @@
                 // Search filter
                 if (searchInput) {
                     const woNumber = cells[0].textContent.toLowerCase();
-                    const equipment = cells[2].textContent.toLowerCase();
+                    const equipment = cells[4].textContent.toLowerCase();
                     showRow = woNumber.includes(searchInput) || equipment.includes(searchInput);
                 }
 
                 // Status filter
                 if (showRow && statusFilter) {
-                    const status = cells[5].textContent.trim();
+                    const status = cells[7].textContent.trim();
                     showRow = status === statusFilter;
                 }
 
                 // Priority filter
                 if (showRow && priorityFilter) {
-                    const priority = cells[4].textContent.trim();
+                    const priority = cells[6].textContent.trim();
                     showRow = priority === priorityFilter;
+                }
+
+                // Type filter
+                if (showRow && typeFilter) {
+                    const type = cells[2].textContent.trim();
+                    showRow = type === typeFilter;
+                }
+
+                // Category filter
+                if (showRow && categoryFilter) {
+                    const category = cells[3].textContent.trim();
+                    showRow = category === categoryFilter;
                 }
 
                 row.style.display = showRow ? '' : 'none';
             }
         }
 
-        function generateReport() {
-            alert('Report generation feature will be implemented. This will export work orders to PDF or Excel format.');
-        }
+        // Auto-calculate labor cost when hours change
+        document.getElementById('actualHours').addEventListener('change', function() {
+            const hours = parseFloat(this.value) || 0;
+            const laborRate = 50; // Default labor rate per hour - can be configured
+            document.getElementById('laborCost').value = (hours * laborRate).toFixed(2);
+        });
     </script>
 </body>
 </html>
